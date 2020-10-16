@@ -1,0 +1,139 @@
+
+--The Interface--
+public interface IDatabase {
+	
+	void select();
+	void insert();
+	void update();
+	void delete();
+}
+//class:Oracle
+public class Oracle implements IDatabase {
+
+	@Override
+	public void select() {
+		System.out.println("SELECT * FROM [resource]");
+		
+	}
+	@Override
+	public void insert() {
+		System.out.println("INSERT INTO table\r\n" + 
+				"(column1, column2, ... column_n )\r\n" + 
+				"VALUES\r\n" + 
+				"(expression1, expression2, ... expression_n ); ");
+	}
+	@Override
+	public void update() {
+		System.out.println("UPDATE table\r\n" + 
+				"SET column1 = expression1,\r\n" + 
+				"    column2 = expression2,\r\n" + 
+				"    ...\r\n" + 
+				"    column_n = expression_n\r\n" + 
+				"[WHERE conditions];");
+	}
+	@Override
+	public void delete() {
+		System.out.println("DELETE FROM table\r\n" + 
+				"[WHERE conditions];");
+		
+	}
+}
+
+//class:Mongodb
+public class Mongodb implements IDatabase{
+
+	@Override
+	public void select() {
+		System.out.println("db.[table_name].find(\r\n" + 
+				"    { status: { $ne: \"A\" } }\r\n" + 
+				")");
+	}
+
+	@Override
+	public void insert() {
+		System.out.println("db.[table_name].insertOne(\r\n" + 
+				"   { value1: \"bcd001\", value2: 45, value3: \"A\" }\r\n" + 
+				")");
+		
+	}
+
+	@Override
+	public void update() {
+		System.out.println("db.[table_name].updateMany(\r\n" + 
+				"   { [value]: { $gt[condition]: 25 } },\r\n" + 
+				"   { $set: { status: \"C\" } }\r\n" + 
+				")");
+		
+	}
+
+	@Override
+	public void delete() {
+		System.out.println("db.[table_name].deleteMany( { status[condition]: \"D\" } )");
+		
+	}
+
+}
+
+//class:mysql
+public class mysql implements IDatabase {
+	@Override
+	public void select() {
+		System.out.println("SELECT * FROM [table_name]");
+	}
+	@Override
+	public void insert() {
+		System.out.println("INSERT INTO [table_name] [values]");
+	}
+	@Override
+	public void update() {
+		System.out.println("UPDATE [table_name] SET [values]");
+	}
+	@Override
+	public void delete() {
+		System.out.println("DELETE FROM [table_name]");
+	}
+
+}
+//And finally the main class
+class DatabaseManager{
+	public void SelectDatabase(IDatabase database) {
+		database.select();
+	}
+	public void InsertDatabase(IDatabase database) {
+		database.insert();
+	}
+	public void DeleteDatabase(IDatabase database) {
+		database.delete();
+	}
+	public void UpdateDatabase(IDatabase database) {
+		database.update();
+	}
+	
+	
+}
+
+public class Main {
+
+	public static void main(String[] args) {
+		DatabaseManager dm= new DatabaseManager();
+		System.out.println("Example 1:"); dm.SelectDatabase(new Oracle());
+		System.out.println("Example 2:"); dm.InsertDatabase(new Mongodb());
+		System.out.println("Example 3:"); dm.DeleteDatabase(new mysql());
+		System.out.println("Example 4:"); dm.UpdateDatabase(new Oracle());
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
